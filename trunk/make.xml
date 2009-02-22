@@ -1,0 +1,24 @@
+<project name="ImageScalingk" default="compile" basedir=".">
+    <target name="compile">
+        <mkdir dir="build/classes"/>
+        <mkdir dir="dist"/>
+        <javac source="1.5" srcdir="src" destdir="build/classes" debug="true"
+               optimize="true" verbose="false">
+			<classpath path="libs/Filters.jar"/>
+		</javac>
+        <jar basedir="build/classes" destfile="dist/imagescaling${version}.jar">
+            <fileset dir="src" includes="**/*.properties"/>
+			<fileset dir="." includes="license.txt"/>
+		</jar>
+		<copyfile src="libs/Filters.jar" dest="dist/Filters.jar" />
+	</target>
+
+    <target name="source">
+        <zip destfile="dist/imagescaling_src_${version}.zip">
+            <fileset dir="." includes="make.xml"/>
+            <fileset dir="." includes="src/**/*"/>
+            <fileset dir="." includes="test/**/*"/>
+			<fileset dir="." includes="*.txt"/>
+		</zip>
+    </target>
+</project>
