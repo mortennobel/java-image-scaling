@@ -1,5 +1,9 @@
-<project name="ImageScalingk" default="compile" basedir=".">
-    <target name="compile">
+<project name="ImageScaling" default="compile" basedir=".">
+	<target name="clean">
+		<deltree dir="build" />
+	</target>
+
+	<target name="compile" depends="clean">
         <mkdir dir="build/classes"/>
         <mkdir dir="dist"/>
         <javac source="1.5" srcdir="src" destdir="build/classes" debug="true"
@@ -21,4 +25,12 @@
 			<fileset dir="." includes="*.txt"/>
 		</zip>
     </target>
+
+	<target name="javadoc" depends="compile">
+		<mkdir dir="build/javadoc"/>
+		<javadoc destdir="build/javadoc" sourcepath="src" windowtitle="Image Scaling Library ${version}"/>
+		<zip destfile="dist/imagescaling_javadoc_${version}.zip">
+            <fileset dir="build/javadoc" includes="**/*"/>
+		</zip>
+	</target>
 </project>
