@@ -1,0 +1,15 @@
+#summary A simple introduction
+
+= Introduction =
+
+This will guide you through how to rescale images using this library.
+
+
+= A simple rescale =
+
+Lets say that you have a BufferedImage instance called tomato that should be rescaled to 100x200. If you want a high quality rescale, you should choose the ResampleOp class:
+
+<code language="java">
+ResampleOp  resampleOp = new ResampleOp (100,200);
+BufferedImage rescaledTomato = resampleOp.filter(tomato, null);
+</code>
