@@ -1,5 +1,5 @@
 #summary A short introduction to the library
-#labels Featured
+#labels Featured,Phase-Design
 #sidebar TOCArticles
 
 = Introduction =
