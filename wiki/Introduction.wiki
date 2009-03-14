@@ -28,4 +28,4 @@ This class is based on Chris Cambell's work, so it generally just encapsulate th
 
 == Quality ==
 
-{{{<img src="http://java-image-scaling.googlecode.com/files/ImageScalingResult.png">}}}
+<img src="http://java-image-scaling.googlecode.com/files/ImageScalingResult.png">
