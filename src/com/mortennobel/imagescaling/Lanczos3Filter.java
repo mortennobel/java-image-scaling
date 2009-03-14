@@ -16,7 +16,7 @@
  */
 package com.mortennobel.imagescaling;
 
-public final class Lanczos3Filter implements ResampleFilter {
+final class Lanczos3Filter implements ResampleFilter {
     private final static float PI_FLOAT = (float) Math.PI;
 
 	private float sincModified(float value)

@@ -20,7 +20,7 @@ package com.mortennobel.imagescaling;
 /**
  * @author Heinz Doerr
  */
-public class BiCubicFilter implements ResampleFilter {
+class BiCubicFilter implements ResampleFilter {
 
 	final protected float a;
 

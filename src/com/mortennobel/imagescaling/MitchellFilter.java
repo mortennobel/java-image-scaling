@@ -19,7 +19,7 @@ package com.mortennobel.imagescaling;
 /**
  * The Mitchell resample filter.
  */
-public final class MitchellFilter implements ResampleFilter
+final class MitchellFilter implements ResampleFilter
 {
 	private static final float B = 1.0f / 3.0f;
 	private static final float C = 1.0f / 3.0f;

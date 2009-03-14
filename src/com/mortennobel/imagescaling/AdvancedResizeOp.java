@@ -33,15 +33,12 @@ import java.util.List;
 public abstract class AdvancedResizeOp implements BufferedImageOp {
     private List<ProgressListener> listeners = new ArrayList<ProgressListener>();
 
-    protected final int dstWidth;
-    protected final int dstHeight;
-
+    private final DimensionConstrain dimensionConstrain;
 	private boolean unsharpenFilterAfterReduce = false;
 
-	public AdvancedResizeOp(int dstWidth, int dstHeight) {
-        this.dstWidth = dstWidth;
-        this.dstHeight = dstHeight;
-    }
+	public AdvancedResizeOp(DimensionConstrain dimensionConstrain) {
+		this.dimensionConstrain = dimensionConstrain;
+	}
 
 	public boolean isUnsharpenFilterAfterReduce() {
 		return unsharpenFilterAfterReduce;
@@ -66,7 +63,10 @@ public abstract class AdvancedResizeOp implements BufferedImageOp {
     }
 
     public final BufferedImage filter(BufferedImage src, BufferedImage dest){
-		BufferedImage bufferedImage = doFilter(src, dest);
+		Dimension dstDimension = dimensionConstrain.getDimension(new  Dimension(src.getWidth(),src.getHeight()));
+		int dstWidth = dstDimension.width;
+		int dstHeight = dstDimension.height;
+		BufferedImage bufferedImage = doFilter(src, dest, dstWidth, dstHeight);
 
 		if (unsharpenFilterAfterReduce){
 			float xscale= ((float)dstWidth) / src.getWidth();
@@ -100,7 +100,7 @@ public abstract class AdvancedResizeOp implements BufferedImageOp {
         return amount;
     }
 
-	protected abstract BufferedImage doFilter(BufferedImage src, BufferedImage dest);
+	protected abstract BufferedImage doFilter(BufferedImage src, BufferedImage dest, int dstWidth, int dstHeight);
 
 	/**
      * {@inheritDoc}

@@ -19,7 +19,7 @@ package com.mortennobel.imagescaling;
 /**
  * A Bell resample filter.
  */
-public final class BellFilter implements ResampleFilter
+final class BellFilter implements ResampleFilter
 {
 	public float getSamplingRadius() {
 		return 1.5f;

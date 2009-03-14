@@ -19,7 +19,7 @@ package com.mortennobel.imagescaling;
 /**
  * @author Heinz Doerr
  */
-public final class BiCubicHighFreqResponse extends BiCubicFilter {
+final class BiCubicHighFreqResponse extends BiCubicFilter {
 
 	public BiCubicHighFreqResponse() {
 		super(-1.f);
