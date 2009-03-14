@@ -1,0 +1,5 @@
+#summary Image rescale related links
+
+= Java =
+
+  * [http://today.java.net/pub/a/today/2007/04/03/perils-of-image-getscaledinstance.html The Perils of Image.getScaledInstance() by Chris Campbell 04/03/2007]
