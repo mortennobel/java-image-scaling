@@ -20,12 +20,16 @@ This library improve both methods. First of all the library has a abstract class
 == The MultiStepRescaleOp class ==
 
 This class is based on Chris Cambell's work, so it generally just encapsulate the algorithm Chris described.
+  * Low memory usage
 
 == The ResampleOp class ==
 
   * Add multicore support
   * Choose between different interpolator algorithms (such as BiCubic and Lanczos3).
+  * Very high memory usage
 
 == Quality ==
+
+The following shows you the result of a image scaled using this library.
 
 <img src="http://java-image-scaling.googlecode.com/files/ImageScalingResult.png">
