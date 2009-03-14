@@ -19,7 +19,7 @@ package com.mortennobel.imagescaling;
 /**
  * A box filter (also known as nearest neighbor).
  */
-public final class BoxFilter implements ResampleFilter
+final class BoxFilter implements ResampleFilter
 {
 	public float getSamplingRadius() {
 		return 0.5f;

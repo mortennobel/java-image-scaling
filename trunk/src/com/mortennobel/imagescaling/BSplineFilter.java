@@ -20,7 +20,7 @@ package com.mortennobel.imagescaling;
 /**
  * A B-spline resample filter.
  */
-public final class BSplineFilter implements ResampleFilter
+final class BSplineFilter implements ResampleFilter
 {
 	public float getSamplingRadius() {
 		return 2.0f;

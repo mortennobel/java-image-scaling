@@ -31,18 +31,26 @@ public class MultiStepRescaleOp extends AdvancedResizeOp {
 	private final Object renderingHintInterpolation;
 
 	public MultiStepRescaleOp(int dstWidth, int dstHeight) {
-        super(dstWidth, dstHeight);
-		renderingHintInterpolation = RenderingHints.VALUE_INTERPOLATION_BILINEAR;
+		this (dstWidth, dstHeight, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 	}
 
 	public MultiStepRescaleOp(int dstWidth, int dstHeight, Object renderingHintInterpolation) {
-        super(dstWidth, dstHeight);
+		this(DimensionConstrain.createAbsolutionDimension(dstWidth, dstHeight), renderingHintInterpolation);
+	}
+
+	public MultiStepRescaleOp(DimensionConstrain dimensionConstain) {
+		this (dimensionConstain, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+	}
+
+	public MultiStepRescaleOp(DimensionConstrain dimensionConstain, Object renderingHintInterpolation) {
+		super(dimensionConstain);
 		this.renderingHintInterpolation = renderingHintInterpolation;
 		assert RenderingHints.KEY_INTERPOLATION.isCompatibleValue(renderingHintInterpolation) :
 				"Rendering hint "+renderingHintInterpolation+" is not compatible with interpolation";
 	}
 
-	public BufferedImage doFilter(BufferedImage img, BufferedImage dest) {
+
+	public BufferedImage doFilter(BufferedImage img, BufferedImage dest, int dstWidth, int dstHeight) {
         int type = (img.getTransparency() == Transparency.OPAQUE) ?
                 BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB;
         BufferedImage ret = img;

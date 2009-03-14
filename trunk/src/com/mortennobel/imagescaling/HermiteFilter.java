@@ -19,7 +19,7 @@ package com.mortennobel.imagescaling;
 /**
  * A Hermite resampling filter.
  */
-public class HermiteFilter implements ResampleFilter
+class HermiteFilter implements ResampleFilter
 {
 	public float getSamplingRadius() {
 		return 1.0f;

@@ -16,10 +16,7 @@
  */
 package com.mortennobel.imagescaling.experimental;
 
-import com.mortennobel.imagescaling.ResampleFilter;
-import com.mortennobel.imagescaling.Lanczos3Filter;
-import com.mortennobel.imagescaling.AdvancedResizeOp;
-import com.mortennobel.imagescaling.ImageUtils;
+import com.mortennobel.imagescaling.*;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
@@ -40,6 +37,8 @@ public class ResampleOpSingleThread extends AdvancedResizeOp
 	private int nrChannels;
 	private int srcWidth;
 	private int srcHeight;
+	private int dstWidth;
+	private int dstHeight;
 
 	private class SubSamplingData{
 		private final int[] arrN; // individual - per row or per column - nr of contributions
@@ -63,11 +62,16 @@ public class ResampleOpSingleThread extends AdvancedResizeOp
 	private int processedItems;
 	private int totalItems;
 
-	private ResampleFilter filter = new Lanczos3Filter();
+	private ResampleFilter filter = ResampleFilters.getLanczos3Filter();
 
 	public ResampleOpSingleThread(int destWidth, int destHeight) {
-		super(destWidth,destHeight);
+		super(DimensionConstrain.createAbsolutionDimension(destWidth, destHeight));
 	}
+
+	public ResampleOpSingleThread(DimensionConstrain dimensionConstrain) {
+		super(dimensionConstrain);
+	}
+
 
 	public ResampleFilter getFilter() {
 		return filter;
@@ -77,7 +81,9 @@ public class ResampleOpSingleThread extends AdvancedResizeOp
 		this.filter = filter;
 	}
 
-	public BufferedImage doFilter(BufferedImage srcImg, BufferedImage dest) {
+	public BufferedImage doFilter(BufferedImage srcImg, BufferedImage dest, int dstWidth, int dstHeight) {
+		this.dstWidth = dstWidth;
+		this.dstHeight = dstHeight;
 		if (srcImg.getType() == BufferedImage.TYPE_BYTE_BINARY ||
 				srcImg.getType() == BufferedImage.TYPE_BYTE_INDEXED)
 			srcImg= ImageUtils.convert(srcImg, srcImg.getColorModel().hasAlpha() ?

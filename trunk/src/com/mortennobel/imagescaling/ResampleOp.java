@@ -39,6 +39,8 @@ public class ResampleOp extends AdvancedResizeOp
 	private int nrChannels;
 	private int srcWidth;
 	private int srcHeight;
+	private int dstWidth;
+	private int dstHeight;
 
 	private class SubSamplingData{
 		private final int[] arrN; // individual - per row or per column - nr of contributions
@@ -68,7 +70,11 @@ public class ResampleOp extends AdvancedResizeOp
 
 
 	public ResampleOp(int destWidth, int destHeight) {
-		super(destWidth,destHeight);
+		this(DimensionConstrain.createAbsolutionDimension(destWidth, destHeight));
+	}
+
+	public ResampleOp(DimensionConstrain dimensionConstrain) {
+		super(dimensionConstrain);
 	}
 
 	public ResampleFilter getFilter() {
@@ -87,7 +93,9 @@ public class ResampleOp extends AdvancedResizeOp
 		this.numberOfThreads = numberOfThreads;
 	}
 
-	public BufferedImage doFilter(BufferedImage srcImg, BufferedImage dest) {
+	public BufferedImage doFilter(BufferedImage srcImg, BufferedImage dest, int dstWidth, int dstHeight) {
+		this.dstWidth = dstWidth;
+		this.dstHeight = dstHeight;
 		assert multipleInvocationLock.incrementAndGet()==1:"Multiple concurrent invocations detected";
 
 		if (srcImg.getType() == BufferedImage.TYPE_BYTE_BINARY ||
