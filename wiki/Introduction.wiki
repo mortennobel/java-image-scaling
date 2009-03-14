@@ -1,4 +1,5 @@
 #summary A short introduction to the library
+#sidebar TOCArticles
 
 = Introduction =
 
