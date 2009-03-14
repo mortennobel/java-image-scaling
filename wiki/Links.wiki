@@ -3,3 +3,4 @@
 = Java =
 
   * [http://today.java.net/pub/a/today/2007/04/03/perils-of-image-getscaledinstance.html The Perils of Image.getScaledInstance() by Chris Campbell 04/03/2007]
+  * [http://www.semanticmetadata.net/2007/09/20/content-based-image-resizing-update-to-v2/ Content Based Image Resizing (GPL, Java)]
