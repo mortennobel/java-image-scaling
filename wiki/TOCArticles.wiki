@@ -1,5 +1,5 @@
   * [Welcome Home]
   * [Introduction Introduction]
   * [Getting_started Getting started]
-  * [Usages Where the library is in use]
-  * [Links Links about image rescale]
+  * [Usages Usages]
+  * [Links Links]
