@@ -25,3 +25,7 @@ This class is based on Chris Cambell's work, so it generally just encapsulate th
 
   * Add multicore support
   * Choose between different interpolator algorithms (such as BiCubic and Lanczos3).
+
+== Quality ==
+
+{{{<img src="http://java-image-scaling.googlecode.com/files/ImageScalingResult.png">}}}
