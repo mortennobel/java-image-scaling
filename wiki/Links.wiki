@@ -1,4 +1,5 @@
 #summary Image rescale related links
+#sidebar TOCArticles
 
 = Java =
 
