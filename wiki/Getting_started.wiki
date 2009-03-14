@@ -1,4 +1,6 @@
 #summary A simple introduction
+#labels Featured
+#sidebar TOCArticles
 
 = Introduction =
 
