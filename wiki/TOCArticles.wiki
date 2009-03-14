@@ -1,4 +1,3 @@
-  * [Welcome Home]
   * [Introduction Introduction]
   * [Getting_started Getting started]
   * [Usages Usages]
