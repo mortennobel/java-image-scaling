@@ -10,7 +10,7 @@ The core Java libraries has been capable of scaling images since the very first 
   * Image.getScaledInstance() (You hint the scaling quality as a parameter to the method).
   * Scaling by creating a new Image object and draw a scaled version of the image to that (Graphics2D let you set the interpolater method used)
 
-The get scaled instance approach creates a quite good scaling quality but is terrible slow. The second approach is fast but to create good looking result, you scaling must be between factor 2.0 and 0.5. (If your scaling is outside this range, you should run the algorithm multiple times - See [http://today.java.net/pub/a/today/2007/04/03/perils-of-image-getscaledinstance.html Chris Campbell's blog The Perils of Image.getScaledInstance()]). 
+The Image.getScaledInstance() approach creates a quite good scaling quality but is terrible slow. The second approach is fast but to create good looking result, you scaling must be between factor 2.0 and 0.5. (If your scaling is outside this range, you should run the algorithm multiple times - See [http://today.java.net/pub/a/today/2007/04/03/perils-of-image-getscaledinstance.html Chris Campbell's blog The Perils of Image.getScaledInstance()]). 
 
 This library improve both methods. First of all the library has a abstract class AdvancedResizeOp that add the following features:
   * You can add a progress changed listener to get feedback of how your resizing calculation is doing
