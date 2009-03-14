@@ -1,8 +1,8 @@
-#summary Where this project is used in real life
+#summary Usages of the project
 
 = Introduction =
 
-A list of applications where this project is used
+A list of applications where this project is used 
 
 
 = Details =
