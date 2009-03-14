@@ -1,4 +1,5 @@
 #summary Usages of the project
+#sidebar TOCArticles
 
 = Introduction =
 
