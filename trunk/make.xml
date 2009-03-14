@@ -21,10 +21,18 @@
         <zip destfile="dist/imagescaling_src_${version}.zip">
             <fileset dir="." includes="make.xml"/>
             <fileset dir="." includes="src/**/*"/>
+			<fileset dir="." includes="*.txt"/>
+		</zip>
+    </target>
+	<target name="source_test">
+        <zip destfile="dist/imagescaling_src_unittest_${version}.zip">
+            <fileset dir="." includes="make.xml"/>
+            <fileset dir="." includes="src/**/*"/>
             <fileset dir="." includes="test/**/*"/>
 			<fileset dir="." includes="*.txt"/>
 		</zip>
     </target>
+
 
 	<target name="javadoc" depends="compile">
 		<mkdir dir="build/javadoc"/>
