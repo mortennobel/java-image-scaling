@@ -1,13 +1,5 @@
-#summary Table of content
-
-= Introduction =
-
-Add your content here.
-
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+  * [Welcome Home]
+  * [Introduction Introduction]
+  * [Getting_started Getting started]
+  * [Usages Where the library is in use]
+  * [Links Links about image rescale]
