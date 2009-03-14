@@ -31,9 +31,9 @@ If your tomato image was very large, this might take some time. The following co
 ResampleOp  resampleOp = new ResampleOp (100,200);
 resampleOp.setUnsharpenFilterAfterReduce(true);
 resampleOp.addProgressListener(new ProgressListener() {
-public void notifyProgress(float fraction) {
-System.out.printf("Still working - %f percent %n",fraction*100);
-}
+  public void notifyProgress(float fraction) {
+    System.out.printf("Still working - %f percent %n",fraction*100);
+  }
 });
 BufferedImage rescaledTomato = resampleOp.filter(tomato, null);
 </code>
