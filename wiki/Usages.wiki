@@ -1,0 +1,10 @@
+#summary Where this project is used in real life
+
+= Introduction =
+
+A list of applications where this project is used
+
+
+= Details =
+
+  * [http://www.nobel-joergensen.com/java/projects/easizer/ Easizer - Image resizing made easy!] - A simple image resizing util.
