@@ -1,0 +1,4 @@
+#summary Welcome page
+#sidebar TOCArticles
+
+= Wiki of Java Image Scaling library =
