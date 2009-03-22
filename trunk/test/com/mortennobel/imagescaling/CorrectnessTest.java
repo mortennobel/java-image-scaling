@@ -54,7 +54,7 @@ public class CorrectnessTest extends JFrame {
 		ResampleOp  resampleOp = new ResampleOp (200,200);
 		resampleOp.setFilter(filter);
 		//resampleOp.setNumberOfThreads(1);
-		resampleOp.setUnsharpenFilterAfterReduce(true);
+		resampleOp.setUnsharpenMask(AdvancedResizeOp.UnsharpenMask.Normal);
 
 		BufferedImage image = resampleOp.filter(this.image, null);
 		addImage(filter.getName()+" Unsharpen", image);
@@ -63,7 +63,7 @@ public class CorrectnessTest extends JFrame {
 				System.out.printf("Still working - %f percent %n",fraction*100);
 			}
 		});
-		resampleOp.setUnsharpenFilterAfterReduce(false);
+		resampleOp.setUnsharpenMask(AdvancedResizeOp.UnsharpenMask.None);
 		image = resampleOp.filter(this.image, null);
 		addImage(filter.getName(), image);
 
@@ -71,11 +71,11 @@ public class CorrectnessTest extends JFrame {
 
 	private void doMultiStepRescaleOp(String name, Object renderingHint){
 		MultiStepRescaleOp mro = new MultiStepRescaleOp(200,200, renderingHint);
-		mro.setUnsharpenFilterAfterReduce(true);
+		mro.setUnsharpenMask(AdvancedResizeOp.UnsharpenMask.Normal);
 		BufferedImage res = mro.filter(image, null);
 		addImage(name+" Unsharpen", res);
 
-		mro.setUnsharpenFilterAfterReduce(false);
+		mro.setUnsharpenMask(AdvancedResizeOp.UnsharpenMask.None);
 		res = mro.filter(image, null);
 		addImage(name, res);
 	}

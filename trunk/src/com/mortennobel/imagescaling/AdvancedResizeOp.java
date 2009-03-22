@@ -31,21 +31,33 @@ import java.util.List;
  * @author Morten Nobel-Joergensen
  */
 public abstract class AdvancedResizeOp implements BufferedImageOp {
-    private List<ProgressListener> listeners = new ArrayList<ProgressListener>();
+	public static enum UnsharpenMask{
+		None(0),
+		Soft(0.15f),
+		Normal(0.3f),
+		VerySharp(0.45f),
+		Oversharpened(0.60f);
+		private final float factor;
+
+		UnsharpenMask(float factor) {
+			this.factor = factor;
+		}
+	}
+	private List<ProgressListener> listeners = new ArrayList<ProgressListener>();
 
     private final DimensionConstrain dimensionConstrain;
-	private boolean unsharpenFilterAfterReduce = false;
+	private UnsharpenMask unsharpenMask = UnsharpenMask.None;
 
 	public AdvancedResizeOp(DimensionConstrain dimensionConstrain) {
 		this.dimensionConstrain = dimensionConstrain;
 	}
 
-	public boolean isUnsharpenFilterAfterReduce() {
-		return unsharpenFilterAfterReduce;
+	public UnsharpenMask getUnsharpenMask() {
+		return unsharpenMask;
 	}
 
-	public void setUnsharpenFilterAfterReduce(boolean unsharpenFilterAfterReduce) {
-		this.unsharpenFilterAfterReduce = unsharpenFilterAfterReduce;
+	public void setUnsharpenMask(UnsharpenMask unsharpenMask) {
+		this.unsharpenMask = unsharpenMask;
 	}
 
 	protected void fireProgressChanged(float fraction){
@@ -68,37 +80,16 @@ public abstract class AdvancedResizeOp implements BufferedImageOp {
 		int dstHeight = dstDimension.height;
 		BufferedImage bufferedImage = doFilter(src, dest, dstWidth, dstHeight);
 
-		if (unsharpenFilterAfterReduce){
-			float xscale= ((float)dstWidth) / src.getWidth();
-			float yscale= ((float)dstHeight) / src.getHeight();
-			float amount= bestUnsharpAmountAfterScale(Math.min(xscale, yscale), Math.max(dstWidth, dstHeight));
-			//
-			if (amount > 0) {
-				UnsharpFilter unsharpFilter= new UnsharpFilter();
-				unsharpFilter.setRadius(2f);
-				unsharpFilter.setAmount(amount);
-				unsharpFilter.setThreshold(10);
-				return  unsharpFilter.filter(bufferedImage, null);
-			}
+		if (unsharpenMask!= UnsharpenMask.None){
+			UnsharpFilter unsharpFilter= new UnsharpFilter();
+			unsharpFilter.setRadius(2f);
+			unsharpFilter.setAmount(unsharpenMask.factor);
+			unsharpFilter.setThreshold(10);
+			return  unsharpFilter.filter(bufferedImage, null);
 		}
 
 		return bufferedImage;
 	}
-
-	private float bestUnsharpAmountAfterScale(float scale, int size) {
-        if (scale >= 0.7)
-            return scale > 1.1 ? 0.5f : 0f;
-        float amount= 0.1f;
-        if (size < 400)
-            amount*= size <= 160 ? 2.5 : 1.5;
-        else if (size > 600)
-            amount*= 0.5f;
-        if (scale < 0.1)
-            amount*= 1.5;
-        else if (scale > 0.3)
-            amount*= 0.5;
-        return amount;
-    }
 
 	protected abstract BufferedImage doFilter(BufferedImage src, BufferedImage dest, int dstWidth, int dstHeight);
 
