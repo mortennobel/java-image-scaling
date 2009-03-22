@@ -22,7 +22,7 @@ Tip: You might need to increase your maximum heap. This can be done using the -X
 Let's improve the quality a bit more adding a unsharpen filter to the final image. This will remove some of blur, that a rescale operation creates.
 <code language="java">
 ResampleOp  resampleOp = new ResampleOp (100,200);
-resampleOp.setUnsharpenFilterAfterReduce(true);
+resampleOp.setUnsharpenMask(AdvancedResizeOp.UnsharpenMask.Normal);
 BufferedImage rescaledTomato = resampleOp.filter(tomato, null);
 </code>
 
@@ -31,7 +31,7 @@ BufferedImage rescaledTomato = resampleOp.filter(tomato, null);
 If your tomato image was very large, this might take some time. The following code add a change listener so the user can see that the computer is actually is working.
 <code language="java">
 ResampleOp  resampleOp = new ResampleOp (100,200);
-resampleOp.setUnsharpenFilterAfterReduce(true);
+resampleOp.setUnsharpenMask(AdvancedResizeOp.UnsharpenMask.Normal);
 resampleOp.addProgressListener(new ProgressListener() {
   public void notifyProgress(float fraction) {
     System.out.printf("Still working - %f percent %n",fraction*100);
