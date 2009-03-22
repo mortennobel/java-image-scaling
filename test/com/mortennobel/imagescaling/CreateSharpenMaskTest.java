@@ -46,7 +46,6 @@ public class CreateSharpenMaskTest {
 	private void saveSubImageType(BufferedImage source, Graphics2D dest, ResampleOp.UnsharpenMask unsharpenMash){
 		int x = source.getWidth()*unsharpenMash.ordinal();
 		int height = dest.getFontMetrics().getHeight();
-		System.out.println("Height : "+height);
 		int margin = 5;
 		dest.drawImage(source, x ,0,null);
 		dest.setColor(new Color(1,1,1,0.5f));
