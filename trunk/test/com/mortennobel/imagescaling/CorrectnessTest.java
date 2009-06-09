@@ -19,18 +19,31 @@ package com.mortennobel.imagescaling;
 
  
 
+import com.mortennobel.imagescaling.experimental.ResampleOpSingleThread;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.LineBorder;
 import java.awt.image.BufferedImage;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.io.IOException;
 
-public class CorrectnessTest extends JFrame {
+public class CorrectnessTest extends JFrame implements ActionListener {
+	private JPanel contentPanel = new JPanel(new GridLayout(0,6));
 	public CorrectnessTest(){
 		setUp();
-		getContentPane().setLayout(new GridLayout(0,6));
+		getContentPane().setLayout(new BorderLayout());
+		getContentPane().add(contentPanel,BorderLayout.CENTER);
+
+		JPanel buttonPanel = new JPanel(new FlowLayout());
+		JButton save = new JButton("Save");
+		save.addActionListener(this);
+		buttonPanel.add(save);
+		getContentPane().add(buttonPanel,BorderLayout.SOUTH);
+
 		addContent();
 		pack();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -51,7 +64,7 @@ public class CorrectnessTest extends JFrame {
 	}
 
 	private void doRescale(ResampleFilter filter) {
-		ResampleOp  resampleOp = new ResampleOp (200,200);
+		ResampleOpSingleThread resampleOp = new ResampleOpSingleThread (200,200);
 		resampleOp.setFilter(filter);
 		//resampleOp.setNumberOfThreads(1);
 		resampleOp.setUnsharpenMask(AdvancedResizeOp.UnsharpenMask.Normal);
@@ -84,7 +97,7 @@ public class CorrectnessTest extends JFrame {
 		System.out.println("Adding "+name);
 		JLabel label = new JLabel( new ImageIcon(image), JLabel.CENTER);
 		label.setBorder(new TitledBorder(new LineBorder(Color.DARK_GRAY),name));
-		getContentPane().add(label);
+		contentPanel.add(label);
 	}
 
 	public void addContent()  {
@@ -104,5 +117,24 @@ public class CorrectnessTest extends JFrame {
 
 	public static void main(String[] args) {
 		new CorrectnessTest();
+	}
+
+	/**
+	 * Invoked when an action occurs.
+	 */
+	public void actionPerformed(ActionEvent e) {
+		JFileChooser fileChooser = new JFileChooser();
+		int res = fileChooser.showSaveDialog(this);
+		if (res==JFileChooser.APPROVE_OPTION){
+			BufferedImage bi = new BufferedImage(contentPanel.getWidth(),contentPanel.getHeight(),BufferedImage.TYPE_INT_RGB);
+			Graphics2D g2d = bi.createGraphics();
+			contentPanel.paint(g2d);
+			g2d.dispose();
+			try {
+				ImageIO.write(bi, "png", fileChooser.getSelectedFile());
+			} catch (IOException e1) {
+				JOptionPane.showMessageDialog(this, e1.getMessage());
+			}
+		}
 	}
 }
