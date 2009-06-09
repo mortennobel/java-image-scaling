@@ -19,6 +19,7 @@ package com.mortennobel.imagescaling.issues;
 
 import junit.framework.TestCase;
 import com.mortennobel.imagescaling.ResampleOp;
+import com.mortennobel.imagescaling.experimental.ResampleOpSingleThread;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -33,6 +34,12 @@ public class Issue1 extends TestCase {
 	public void testIssue() throws Exception {
 		BufferedImage inputImage = ImageIO.read(getClass().getResourceAsStream("test.jpg"));
 		new ResampleOp(51, 51).filter(inputImage, null);
-
 	}
+
+	public void testIssueSingleThread() throws Exception {
+		BufferedImage inputImage = ImageIO.read(getClass().getResourceAsStream("test.jpg"));
+		new ResampleOpSingleThread(51, 51).filter(inputImage, null);
+	}
+
+
 }

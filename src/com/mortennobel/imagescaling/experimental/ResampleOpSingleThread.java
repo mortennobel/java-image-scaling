@@ -95,27 +95,14 @@ public class ResampleOpSingleThread extends AdvancedResizeOp
         this.srcHeight = srcImg.getHeight();
 
 
-        float xscale;
-		float yscale;
-		if (srcWidth == 1) {
-			xscale = (float)dstWidth / (float)srcWidth;
-		}
-		else {
-			xscale = (float)(dstWidth - 1) / (float)(srcWidth - 1);
-		}
-		if (srcHeight == 1) {
-			yscale = (float)dstHeight / (float)srcHeight;
-		}
-		else {
-			yscale = (float)(dstHeight - 1) / (float)(srcHeight - 1);
-		}
+
 
 		this.processedItems = 0;
 		this.totalItems = srcHeight;
 
 		// Pre-calculate  sub-sampling
-		horizontalSubsamplingData = createSubSampling(srcWidth, dstWidth, xscale);
-		verticalSubsamplingData = createSubSampling(srcHeight, dstHeight, yscale);
+		horizontalSubsamplingData = createSubSampling(srcWidth, dstWidth);
+		verticalSubsamplingData = createSubSampling(srcHeight, dstHeight);
 
 		//final byte[] outPixels = new byte[dstWidth*dstHeight*nrChannels];
 
@@ -145,7 +132,8 @@ public class ResampleOpSingleThread extends AdvancedResizeOp
 		return out;
     }
 
-	private SubSamplingData createSubSampling(int srcSize, int dstSize, float scale) {
+	private SubSamplingData createSubSampling(int srcSize, int dstSize) {
+		float scale = (float) dstSize / (float)srcSize;
 		int[] arrN= new int[dstSize];
 		int numContributors;
 		float[] arrWeight;
@@ -185,7 +173,7 @@ public class ResampleOpSingleThread extends AdvancedResizeOp
 						n= j;
 					}
 					int k= arrN[i];
-					arrN[i]+= 1;
+					arrN[i]++;
 					if (n < 0 || n >= srcSize) {
 						weight= 0.0f;// Flag that cell should not be used
 					}
@@ -231,7 +219,7 @@ public class ResampleOpSingleThread extends AdvancedResizeOp
 						n= j;
 					}
 					int k= arrN[i];
-					arrN[i]+= 1;
+					arrN[i]++;
 					if (n < 0 || n >= srcSize) {
 						weight= 0.0f;// Flag that cell should not be used
 					}
