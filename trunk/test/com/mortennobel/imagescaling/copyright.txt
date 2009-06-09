@@ -1,5 +1,5 @@
 largeimage.jpg
-(c) copyright Peter Kirk | http://familien-kirk.dk/
+(c)  copyright Peter Kirk | http://familien-kirk.dk/
 
 its-a-trap.png
-(c) copyright Blender Foundation | www.bigbuckbunny.org
+(c)  copyright Blender Foundation | www.bigbuckbunny.org
