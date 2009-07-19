@@ -24,11 +24,7 @@ import com.mortennobel.imagescaling.AdvancedResizeOp;
 import java.awt.image.BufferedImage;
 
 /**
- * Created by IntelliJ IDEA.
- * User: morten
- * Date: Jul 7, 2009
- * Time: 6:16:51 PM
- * To change this template use File | Settings | File Templates.
+ * Turned out to be a dublicate of Issue2
  */
 public class Issue3 extends TestCase {
 	public void testBug(){
