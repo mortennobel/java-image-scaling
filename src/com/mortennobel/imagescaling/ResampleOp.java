@@ -96,6 +96,11 @@ public class ResampleOp extends AdvancedResizeOp
 	public BufferedImage doFilter(BufferedImage srcImg, BufferedImage dest, int dstWidth, int dstHeight) {
 		this.dstWidth = dstWidth;
 		this.dstHeight = dstHeight;
+
+		if (dstWidth<3 || dstHeight<3){
+			throw new RuntimeException("Error doing rescale. Target size was "+dstWidth+"x"+dstHeight+" but must be at least 3x3.");
+		}
+
 		assert multipleInvocationLock.incrementAndGet()==1:"Multiple concurrent invocations detected";
 
 		if (srcImg.getType() == BufferedImage.TYPE_BYTE_BINARY ||
