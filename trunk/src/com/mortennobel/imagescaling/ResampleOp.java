@@ -291,18 +291,21 @@ public class ResampleOp extends AdvancedResizeOp
 
 
     private void waitForAllThreadsAreDone() {
-        synchronized(lock){
-            while (runningThreads>0){
-                try{
-                    lock.wait();
-                } catch (InterruptedException e) {
-                    // ignore
-                }
-            }
-        }
-    }
+		if (runningThreads>0){
+			synchronized(lock){
+				while (runningThreads>0){
+					try{
+						lock.wait();
+					} catch (InterruptedException e) {
+						// ignore
+					}
+				}
+			}
+		}
+	}
 
     private void verticalFromWorkToDst(byte[][] workPixels, byte[] outPixels, int start, int delta) {
+		boolean useChannel3 = nrChannels>3;
 		for (int x = start; x < dstWidth; x+=delta)
         {
 			final int xLocation = x*nrChannels;
@@ -312,20 +315,33 @@ public class ResampleOp extends AdvancedResizeOp
 				final int max= verticalSubsamplingData.arrN[y];
 				final int sampleLocation = (y*dstWidth+x)*nrChannels;
 
-				for (int channel = nrChannels-1; channel >=0 ; channel--)
-				{
-					float sample = 0.0f;
-					int index= yTimesNumContributors;
-					for (int j= max-1; j >=0 ; j--) {
-						int valueLocation = verticalSubsamplingData.arrPixel[index];
-						sample+= (workPixels[valueLocation][xLocation+channel]&0xff) * verticalSubsamplingData.arrWeight[index];
 
-						index++;
+				float sample0 = 0.0f;
+				float sample1 = 0.0f;
+				float sample2 = 0.0f;
+				float sample3 = 0.0f;
+				int index= yTimesNumContributors;
+				for (int j= max-1; j >=0 ; j--) {
+					int valueLocation = verticalSubsamplingData.arrPixel[index];
+					float arrWeight = verticalSubsamplingData.arrWeight[index];
+					sample0+= (workPixels[valueLocation][xLocation]&0xff) *arrWeight ;
+					sample1+= (workPixels[valueLocation][xLocation+1]&0xff) * arrWeight;
+					sample2+= (workPixels[valueLocation][xLocation+2]&0xff) * arrWeight;
+					if (useChannel3){
+						sample3+= (workPixels[valueLocation][xLocation+3]&0xff) * arrWeight;
 					}
 
-					putSample(outPixels, channel, sample, sampleLocation);
-                }
-            }
+					index++;
+				}
+
+				if (useChannel3){
+					putSample(outPixels, sample0, sample1,sample2,sample3, sampleLocation);
+				}
+				else{
+					putSample(outPixels, sample0, sample1,sample2, sampleLocation);
+				}
+
+			}
             setProgress(processedItems++, totalItems);
         }
     }
@@ -338,50 +354,69 @@ public class ResampleOp extends AdvancedResizeOp
     private void horizontallyFromSrcToWork(BufferedImage srcImg, byte[][] workPixels, int start, int delta) {
 		final int[] tempPixels = new int[srcWidth];   // Used if we work on int based bitmaps, later used to keep channel values
 		final byte[] srcPixels = new byte[srcWidth*nrChannels]; // create reusable row to minimize memory overhead
-        for (int k = start; k < srcHeight; k=k+delta)
+		final boolean useChannel3 = nrChannels>3;
+
+
+		for (int k = start; k < srcHeight; k=k+delta)
         {
 			ImageUtils.getPixelsBGR(srcImg, k, srcWidth, srcPixels, tempPixels);
 
-			for (int channel = nrChannels-1;channel>=0 ; channel--)
+			for (int i = dstWidth-1;i>=0 ; i--)
 			{
-				int[] sampleValuesInt = tempPixels; // reuse existing variable as sample value
-				getSamplesHorizontal(srcPixels,channel,sampleValuesInt);
+				int sampleLocation = i*nrChannels;
+				final int max = horizontalSubsamplingData.arrN[i];
 
-				for (int i = dstWidth-1;i>=0 ; i--)
-				{
-					int sampleLocation = i*nrChannels;
-					final int max = horizontalSubsamplingData.arrN[i];
+				float sample0 = 0.0f;
+				float sample1 = 0.0f;
+				float sample2 = 0.0f;
+				float sample3 = 0.0f;
+				int index= i * horizontalSubsamplingData.numContributors;
+				for (int j= max-1; j >= 0; j--) {
+					float arrWeight = horizontalSubsamplingData.arrWeight[index];
+					int pixelIndex = horizontalSubsamplingData.arrPixel[index]*nrChannels;
 
-					float sample= 0.0f;
-					int index= i * horizontalSubsamplingData.numContributors;
-					for (int j= max-1; j >= 0; j--) {
-						sample += sampleValuesInt[horizontalSubsamplingData.arrPixel[index]] * horizontalSubsamplingData.arrWeight[index];
-						index++;
+					sample0 += (srcPixels[pixelIndex]&0xff) * arrWeight;
+					sample1 += (srcPixels[pixelIndex+1]&0xff) * arrWeight;
+					sample2 += (srcPixels[pixelIndex+2]&0xff)  * arrWeight;
+					if (useChannel3){
+						sample3 += (srcPixels[pixelIndex+3]&0xff)  * arrWeight;
 					}
+					index++;
+				}
 
-					putSample(workPixels[k], channel, (int)sample, sampleLocation);
-                }
-			}
+				if (useChannel3){
+					putSample(workPixels[k], sample0, sample1,sample2 ,sample3, sampleLocation);
+				}
+				else{
+					putSample(workPixels[k], sample0, sample1,sample2 , sampleLocation);
+
+				}
             setProgress(processedItems++, totalItems);
+			}
 		}
     }
 
+	private byte toByte(float f){
+		if (f<0){
+			return 0;
+		}
+		if (f>MAX_CHANNEL_VALUE){
+			return (byte) MAX_CHANNEL_VALUE;
+		}
+		return (byte)f;
+	}
 
-    private void putSample(byte[] image, int channel, float sample, int location) {
-		int result = (int) sample;
-		if (sample<0){
-			result = 0;
-		}
-		else if (result > MAX_CHANNEL_VALUE) {
-			result= MAX_CHANNEL_VALUE;
-		}
-		image[location+channel] = (byte)result;
-    }
+	private void putSample(byte[] image, float sample0,float sample1,float sample2, int location) {
+		image[location] = toByte(sample0);
+		image[location+1] = toByte(sample1);
+		image[location+2] = toByte(sample2);
+	}
 
-	private void getSamplesHorizontal(byte[] src, int channel, int[] dest){
-		for (int xDest=0, x=channel;x<src.length;x+=nrChannels,xDest++){
-			dest[xDest] = src[x]&0xff;
-		}
+	private void putSample(byte[] image, float sample0,float sample1,float sample2,float sample3, int location) {
+		image[location] = toByte(sample0);
+		image[location+1] = toByte(sample1);
+		image[location+2] = toByte(sample2);
+		image[location+3] = toByte(sample3);
 	}
 
 	private void setProgress(int zeroBasedIndex, int totalItems){
