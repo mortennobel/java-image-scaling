@@ -93,7 +93,7 @@ public class ImageUtils {
 		case BufferedImage.TYPE_4BYTE_ABGR_PRE:
 		case BufferedImage.TYPE_BYTE_GRAY:
 			raster= img.getRaster();
-			int ttype= raster.getTransferType();
+			//int ttype= raster.getTransferType();
 			raster.getDataElements(x, y, w, h, array);
 			break;
 		case BufferedImage.TYPE_INT_BGR:
@@ -136,7 +136,7 @@ public class ImageUtils {
 	public static void setBGRPixels(byte[] bgrPixels, BufferedImage img, int x, int y, int w, int h) {
 		int imageType= img.getType();
 		WritableRaster raster= img.getRaster();
-		int ttype= raster.getTransferType();
+		//int ttype= raster.getTransferType();
 		if (imageType == BufferedImage.TYPE_3BYTE_BGR ||
 				imageType == BufferedImage.TYPE_4BYTE_ABGR ||
 				imageType == BufferedImage.TYPE_4BYTE_ABGR_PRE ||
