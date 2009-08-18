@@ -9,3 +9,6 @@
   * [https://jrawio.dev.java.net/] JRawIO - raw format for Java ImageIO
 = Native =
   * [http://www.imagemagick.org/ ImageMagick - open source image library]=
+= Image scaling theory =
+  * [http://www.compuphase.com/graphic/scale2.htm Quick image scaling by 2]
+  * [http://www.ddj.com/architect/184405045 Image Scaling With Bresenham]
