@@ -1,20 +1,20 @@
 <project name="ImageScaling" default="compile" basedir=".">
 	<target name="clean">
-		<deltree dir="build" />
+		<delete dir="build" />
 	</target>
 
 	<target name="compile" depends="clean">
         <mkdir dir="build/classes"/>
         <mkdir dir="dist"/>
         <javac source="1.5" srcdir="src" destdir="build/classes" debug="true"
-               optimize="true" verbose="false">
+               optimize="true" verbose="false" target="1.5">
 			<classpath path="libs/Filters.jar"/>
 		</javac>
         <jar basedir="build/classes" destfile="dist/imagescaling${version}.jar">
             <fileset dir="src" includes="**/*.properties"/>
 			<fileset dir="." includes="license.txt"/>
 		</jar>
-		<copyfile src="libs/Filters.jar" dest="dist/Filters.jar" />
+		<copy file="libs/Filters.jar" tofile="dist/Filters.jar" />
 	</target>
 
     <target name="source">
