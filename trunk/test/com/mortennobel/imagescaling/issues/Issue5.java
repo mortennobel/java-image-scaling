@@ -20,9 +20,15 @@ package com.mortennobel.imagescaling.issues;
 import junit.framework.TestCase;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageTypeSpecifier;
+import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.util.Iterator;
+import java.io.IOException;
 
 import com.mortennobel.imagescaling.ResampleOp;
 import com.mortennobel.imagescaling.AdvancedResizeOp;
@@ -45,7 +51,9 @@ public class Issue5 extends TestCase {
 			int calcHeight = 0;
 			int calcWidth = 0;
 
-			BufferedImage bufferedImage = ImageIO.read(new URL("http://lh4.ggpht.com/_9ZodCKpdHRc/SlduqK90ZpI/AAAAAAAAAXU/qQb8G549oy4/pic_010b%2817MB%29.jpg").openStream());
+//			BufferedImage bufferedImage = ImageIO.read(getClass().getResourceAsStream("pic_010b(17MB).jpg"));
+			BufferedImage bufferedImage = readImage(getClass().getResourceAsStream("pic_010b(17MB).jpg"));
+
 			// Calculate the new Height if not specified
 			if(bufferedImage.getHeight() > bufferedImage.getWidth()){
 				if(bufferedImage.getHeight() > 1600){
@@ -82,6 +90,35 @@ public class Issue5 extends TestCase {
 	}
 
 
+	/**
+	 * Workaround for sRGB color space bug on JRE 1.5
+	 * http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4705399
+	 *  
+	 * @param source (inputstream or File)
+	 * @return fixed buffered image
+	 * @throws IOException
+	 */
+	public static BufferedImage readImage(Object source) throws IOException {
+		ImageInputStream stream = ImageIO.createImageInputStream(source);
+		ImageReader reader = ImageIO.getImageReaders(stream).next();
+		reader.setInput(stream);
+		ImageReadParam param =reader.getDefaultReadParam();
+
+		ImageTypeSpecifier typeToUse = null;
+		for (Iterator i = reader.getImageTypes(0);i.hasNext(); ) {
+			ImageTypeSpecifier type = (ImageTypeSpecifier) i.next();
+			if (type.getColorModel().getColorSpace().isCS_sRGB())
+				typeToUse = type;
+		}
+		if (typeToUse!=null) param.setDestinationType(typeToUse);
+
+		BufferedImage b = reader.read(0, param);
+
+		reader.dispose();
+		stream.close();
+		return b;
+	}
+
 
 
 	public static BufferedImage createResizedCopy(BufferedImage originalImage, int scaledWidth, int scaledHeight) {
@@ -90,5 +127,4 @@ public class Issue5 extends TestCase {
 		BufferedImage rescaledTomato = resampleOp.filter(originalImage, null);
 		return rescaledTomato;
 	}
-
 }
