@@ -42,7 +42,7 @@ public class ResampleOp extends AdvancedResizeOp
 	private int dstWidth;
 	private int dstHeight;
 
-	private class SubSamplingData{
+	static class SubSamplingData{
 		private final int[] arrN; // individual - per row or per column - nr of contributions
 		private final int[] arrPixel;  // 2Dim: [wid or hei][contrib]
 		private final float[] arrWeight; // 2Dim: [wid or hei][contrib]
@@ -53,6 +53,23 @@ public class ResampleOp extends AdvancedResizeOp
 			this.arrPixel = arrPixel;
 			this.arrWeight = arrWeight;
 			this.numContributors = numContributors;
+		}
+
+
+		public int getNumContributors() {
+			return numContributors;
+		}
+
+		public int[] getArrN() {
+			return arrN;
+		}
+
+		public int[] getArrPixel() {
+			return arrPixel;
+		}
+
+		public float[] getArrWeight() {
+			return arrWeight;
 		}
 	}
 
@@ -119,8 +136,8 @@ public class ResampleOp extends AdvancedResizeOp
 		this.totalItems = srcHeight + dstWidth;
 
 		// Pre-calculate  sub-sampling
-		horizontalSubsamplingData = createSubSampling(srcWidth, dstWidth);
-		verticalSubsamplingData = createSubSampling(srcHeight, dstHeight);
+		horizontalSubsamplingData = createSubSampling(filter, srcWidth, dstWidth);
+		verticalSubsamplingData = createSubSampling(filter,srcHeight, dstHeight);
 
 
         final BufferedImage scrImgCopy = srcImg;
@@ -184,7 +201,7 @@ public class ResampleOp extends AdvancedResizeOp
 		return out;
     }
 
-	private SubSamplingData createSubSampling(int srcSize, int dstSize) {
+	static SubSamplingData createSubSampling(ResampleFilter filter, int srcSize, int dstSize) {
 		float scale = (float)dstSize / (float)srcSize;
 		int[] arrN= new int[dstSize];
 		int numContributors;
