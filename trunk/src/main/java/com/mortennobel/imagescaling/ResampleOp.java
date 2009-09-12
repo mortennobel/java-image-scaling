@@ -211,6 +211,7 @@ public class ResampleOp extends AdvancedResizeOp
 		final float fwidth= filter.getSamplingRadius();
 
 		if (scale < 1.0f) {
+			float centerOffset = 0.5f/scale;
 			final float width= fwidth / scale;
 			numContributors= (int)(width * 2.0f + 2); // Heinz: added 1 to be save with the ceilling
 			arrWeight= new float[dstSize * numContributors];
@@ -220,7 +221,7 @@ public class ResampleOp extends AdvancedResizeOp
 			//
 			for (int i= 0; i < dstSize; i++) {
 				final int subindex= i * numContributors;
-				float center= i / scale;
+				float center= i / scale + centerOffset;
 				int left= (int)Math.floor(center - width);
 				int right= (int)Math.ceil(center + width);
 				for (int j= left; j <= right; j++) {
@@ -267,7 +268,7 @@ public class ResampleOp extends AdvancedResizeOp
 			//
 			for (int i= 0; i < dstSize; i++) {
 				final int subindex= i * numContributors;
-				float center= i / scale;
+				float center= i / scale ;
 				int left= (int)Math.floor(center - fwidth);
 				int right= (int)Math.ceil(center + fwidth);
 				for (int j= left; j <= right; j++) {
