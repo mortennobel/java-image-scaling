@@ -77,7 +77,7 @@ public class ResampleOp extends AdvancedResizeOp
 	private SubSamplingData verticalSubsamplingData;
 
 	private int processedItems;
-	private int totalItems;
+	private float totalItems;
 
 	private int numberOfThreads = Runtime.getRuntime().availableProcessors();
 
@@ -359,7 +359,10 @@ public class ResampleOp extends AdvancedResizeOp
 				}
 
 			}
-            setProgress(processedItems++, totalItems);
+			processedItems++;
+			if (start==0){ // only update progress listener from main thread
+            	setProgress();
+			}
         }
     }
 
@@ -408,7 +411,10 @@ public class ResampleOp extends AdvancedResizeOp
 					putSample(workPixels[k], sample0, sample1,sample2 , sampleLocation);
 
 				}
-            setProgress(processedItems++, totalItems);
+			}
+			processedItems++;
+			if (start==0){ // only update progress listener from main thread
+				setProgress();
 			}
 		}
     }
@@ -436,8 +442,8 @@ public class ResampleOp extends AdvancedResizeOp
 		image[location+3] = toByte(sample3);
 	}
 
-	private void setProgress(int zeroBasedIndex, int totalItems){
-        fireProgressChanged(zeroBasedIndex/(float)totalItems);
+	private void setProgress(){
+        fireProgressChanged(processedItems/totalItems);
     }
 
 	protected int getResultBufferedImageType(BufferedImage srcImg) {
