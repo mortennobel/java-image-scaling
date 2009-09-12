@@ -17,5 +17,5 @@
 package com.mortennobel.imagescaling;
 
 public interface ProgressListener {
-    public void notifyProgress(float fraction);
+	public void notifyProgress(float fraction);
 }
