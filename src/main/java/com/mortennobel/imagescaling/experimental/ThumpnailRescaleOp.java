@@ -71,15 +71,16 @@ public class ThumpnailRescaleOp extends AdvancedResizeOp {
 		float[][] scaledSampling = new float[sampling.points.length][2];
 		for (int i=0;i<sampling.points.length;i++){
 			float[] point=sampling.points[i];
-			scaledSampling[i][0] = (point[0]-0.5f)*scaleX;
-			scaledSampling[i][1] = (point[1]-0.5f)*scaleY;
+			final float ROUNDING_ERROR_MARGIN = 0.0001f;
+			scaledSampling[i][0] = point[0]*scaleX+ROUNDING_ERROR_MARGIN;
+			scaledSampling[i][1] = point[1]*scaleY+ROUNDING_ERROR_MARGIN;
 //			System.out.println("Sample "+scaledSampling[i][0]+" "+scaledSampling[i][1]);
 		}
-		float srcX = scaleX/2;
+		float srcX = 0;
 		int maxSrcX = src.getWidth()-1;
 		int maxSrcY = src.getHeight()-1;
 		for (int dstX=0;dstX<dstWidth;dstX++,srcX+=scaleX){
-			float srcY = scaleY/2;
+			float srcY = 0;
 //			System.out.println("Center "+srcX +" srcY "+srcY);
 			for (int dstY=0;dstY<dstHeight;dstY++,srcY+=scaleY){
 				int r = 0, g = 0, b = 0, a = 0;
