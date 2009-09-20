@@ -137,8 +137,6 @@ public class TestThumpnailRescaleOp{
 		BufferedImage bufferedImage2 = multiStepRescale.filter(bi, null);
 		assertEquals(bufferedImage2.getWidth(), destWidth);
 		assertEquals(bufferedImage2.getHeight(), destHeight);
-		JOptionPane.showMessageDialog(null, "Before", "", 0, new ImageIcon(bi));
-		JOptionPane.showMessageDialog(null, "After", "", 0, new ImageIcon(bufferedImage2));
 
 	}
 
