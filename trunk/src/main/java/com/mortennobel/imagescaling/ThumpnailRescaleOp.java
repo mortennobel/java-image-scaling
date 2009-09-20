@@ -1,11 +1,7 @@
-package com.mortennobel.imagescaling.experimental;
+package com.mortennobel.imagescaling;
 
-import com.mortennobel.imagescaling.AdvancedResizeOp;
-import com.mortennobel.imagescaling.DimensionConstrain;
-import com.mortennobel.imagescaling.ImageUtils;
 
 import java.awt.image.BufferedImage;
-import java.awt.*;
 
 /**
  * The idea of this class is to provide fast (and inaccurate) rescaling method
@@ -65,8 +61,8 @@ public class ThumpnailRescaleOp extends AdvancedResizeOp {
 			out = new BufferedImage(dstWidth, dstHeight, numberOfChannels==4?BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB);
 		}
 
-		float scaleX = src.getWidth()/dstWidth;
-		float scaleY = src.getHeight()/dstHeight;
+		float scaleX = src.getWidth()/(float)dstWidth;
+		float scaleY = src.getHeight()/(float)dstHeight;
 
 		float[][] scaledSampling = new float[sampling.points.length][2];
 		for (int i=0;i<sampling.points.length;i++){
@@ -74,26 +70,21 @@ public class ThumpnailRescaleOp extends AdvancedResizeOp {
 			final float ROUNDING_ERROR_MARGIN = 0.0001f;
 			scaledSampling[i][0] = point[0]*scaleX+ROUNDING_ERROR_MARGIN;
 			scaledSampling[i][1] = point[1]*scaleY+ROUNDING_ERROR_MARGIN;
-//			System.out.println("Sample "+scaledSampling[i][0]+" "+scaledSampling[i][1]);
 		}
-		float srcX = 0;
 		int maxSrcX = src.getWidth()-1;
 		int maxSrcY = src.getHeight()-1;
-		for (int dstX=0;dstX<dstWidth;dstX++,srcX+=scaleX){
-			float srcY = 0;
-//			System.out.println("Center "+srcX +" srcY "+srcY);
-			for (int dstY=0;dstY<dstHeight;dstY++,srcY+=scaleY){
+		float srcY = 0;
+		for (int dstY=0;dstY<dstHeight;dstY++,srcY+=scaleY){
+			float srcX = 0;
+			for (int dstX=0;dstX<dstWidth;dstX++,srcX+=scaleX){
 				int r = 0, g = 0, b = 0, a = 0;
 				for (float[] point:scaledSampling){
 					int x = (int) (srcX+point[0]);
 					int y = (int) (srcY+point[1]);
 					x = Math.max(0,Math.min(x, maxSrcX));
 					y = Math.max(0,Math.min(y, maxSrcY));
-//					System.out.println("x "+(srcX+point[0])+" y "+(srcY+point[1]));
-//					System.out.println("x "+x+" y "+y);
 
 					int rgb = src.getRGB(x,y);
-//					System.out.println(""+Integer.toHexString(rgb));
 					b += rgb&0xff;
 					rgb = rgb>>>8;
 					g += rgb&0xff;

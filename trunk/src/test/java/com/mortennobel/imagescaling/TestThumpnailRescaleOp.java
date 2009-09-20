@@ -1,6 +1,6 @@
 package com.mortennobel.imagescaling;
 
-import com.mortennobel.imagescaling.experimental.ThumpnailRescaleOp;
+import com.mortennobel.imagescaling.ThumpnailRescaleOp;
 
 import java.awt.image.BufferedImage;
 import java.awt.*;
@@ -123,4 +123,24 @@ public class TestThumpnailRescaleOp{
 		ThumpnailRescaleOp multiStepRescale = new ThumpnailRescaleOp(50,50);
 		BufferedImage bufferedImage2 = multiStepRescale.filter(bufferedImage, null);
 	}
+
+	@Test
+	public void mediumThumpRescale(){
+		BufferedImage bi = new BufferedImage(10,10,BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = bi.createGraphics();
+		g2d.drawImage(bufferedImage, 0,0,10,10, Color.white,  null);
+		g2d.dispose();
+
+		int destWidth = 7;
+		int destHeight = 8;
+		ThumpnailRescaleOp multiStepRescale = new ThumpnailRescaleOp(destWidth, destHeight);
+		BufferedImage bufferedImage2 = multiStepRescale.filter(bi, null);
+		assertEquals(bufferedImage2.getWidth(), destWidth);
+		assertEquals(bufferedImage2.getHeight(), destHeight);
+		JOptionPane.showMessageDialog(null, "Before", "", 0, new ImageIcon(bi));
+		JOptionPane.showMessageDialog(null, "After", "", 0, new ImageIcon(bufferedImage2));
+
+	}
+
+
 }
