@@ -173,8 +173,8 @@ public class ResampleOp extends AdvancedResizeOp
             final int finalI = i;
             Thread thread = new Thread(new Runnable(){
                 public void run(){
-                    verticalFromWorkToDst(workPixelsCopy, outPixelsCopy, finalI,numberOfThreads);
-                    synchronized (lock){
+					verticalFromWorkToDst(workPixelsCopy, outPixelsCopy, finalI,numberOfThreads);
+					synchronized (lock){
                         runningThreads--;
                         lock.notifyAll();
                     }
@@ -190,6 +190,11 @@ public class ResampleOp extends AdvancedResizeOp
 		BufferedImage out;
 		if (dest!=null && dstWidth==dest.getWidth() && dstHeight==dest.getHeight()){
 			out = dest;
+			int nrDestChannels = ImageUtils.nrChannels(dest);
+			if (nrDestChannels != nrChannels){
+				String errorMgs = String.format("Destination image must be compatible width source image. Source image had %d channels destination image had %d channels", nrChannels, nrDestChannels);
+				throw new RuntimeException(errorMgs);
+			}
 		}else{
 			out = new BufferedImage(dstWidth, dstHeight, getResultBufferedImageType(srcImg));
 		}
@@ -323,6 +328,10 @@ public class ResampleOp extends AdvancedResizeOp
 	}
 
     private void verticalFromWorkToDst(byte[][] workPixels, byte[] outPixels, int start, int delta) {
+		if (nrChannels==1){
+			verticalFromWorkToDstGray(workPixels, outPixels, start,numberOfThreads);
+			return;
+		}
 		boolean useChannel3 = nrChannels>3;
 		for (int x = start; x < dstWidth; x+=delta)
         {
@@ -352,13 +361,43 @@ public class ResampleOp extends AdvancedResizeOp
 					index++;
 				}
 
+				outPixels[sampleLocation] = toByte(sample0);
+				outPixels[sampleLocation +1] = toByte(sample1);
+				outPixels[sampleLocation +2] = toByte(sample2);
 				if (useChannel3){
-					putSample(outPixels, sample0, sample1,sample2,sample3, sampleLocation);
-				}
-				else{
-					putSample(outPixels, sample0, sample1,sample2, sampleLocation);
+					outPixels[sampleLocation +3] = toByte(sample3);
 				}
 
+			}
+			processedItems++;
+			if (start==0){ // only update progress listener from main thread
+            	setProgress();
+			}
+        }
+    }
+
+	private void verticalFromWorkToDstGray(byte[][] workPixels, byte[] outPixels, int start, int delta) {
+		for (int x = start; x < dstWidth; x+=delta)
+        {
+			final int xLocation = x;
+			for (int y = dstHeight-1; y >=0 ; y--)
+			{
+				final int yTimesNumContributors = y * verticalSubsamplingData.numContributors;
+				final int max= verticalSubsamplingData.arrN[y];
+				final int sampleLocation = (y*dstWidth+x);
+
+
+				float sample0 = 0.0f;
+				int index= yTimesNumContributors;
+				for (int j= max-1; j >=0 ; j--) {
+					int valueLocation = verticalSubsamplingData.arrPixel[index];
+					float arrWeight = verticalSubsamplingData.arrWeight[index];
+					sample0+= (workPixels[valueLocation][xLocation]&0xff) *arrWeight ;
+
+					index++;
+				}
+
+				outPixels[sampleLocation] = toByte(sample0);
 			}
 			processedItems++;
 			if (start==0){ // only update progress listener from main thread
@@ -373,6 +412,10 @@ public class ResampleOp extends AdvancedResizeOp
      * @param workPixels
      */
     private void horizontallyFromSrcToWork(BufferedImage srcImg, byte[][] workPixels, int start, int delta) {
+		if (nrChannels==1){
+			horizontallyFromSrcToWorkGray(srcImg, workPixels, start, delta);
+			return;
+		}
 		final int[] tempPixels = new int[srcWidth];   // Used if we work on int based bitmaps, later used to keep channel values
 		final byte[] srcPixels = new byte[srcWidth*nrChannels]; // create reusable row to minimize memory overhead
 		final boolean useChannel3 = nrChannels>3;
@@ -405,13 +448,49 @@ public class ResampleOp extends AdvancedResizeOp
 					index++;
 				}
 
+				workPixels[k][sampleLocation] = toByte(sample0);
+				workPixels[k][sampleLocation +1] = toByte(sample1);
+				workPixels[k][sampleLocation +2] = toByte(sample2);
 				if (useChannel3){
-					putSample(workPixels[k], sample0, sample1,sample2 ,sample3, sampleLocation);
+					workPixels[k][sampleLocation +3] = toByte(sample3);
 				}
-				else{
-					putSample(workPixels[k], sample0, sample1,sample2 , sampleLocation);
+			}
+			processedItems++;
+			if (start==0){ // only update progress listener from main thread
+				setProgress();
+			}
+		}
+    }
 
+	/**
+     * Apply filter to sample horizontally from Src to Work
+     * @param srcImg
+     * @param workPixels
+     */
+    private void horizontallyFromSrcToWorkGray(BufferedImage srcImg, byte[][] workPixels, int start, int delta) {
+		final int[] tempPixels = new int[srcWidth];   // Used if we work on int based bitmaps, later used to keep channel values
+		final byte[] srcPixels = new byte[srcWidth]; // create reusable row to minimize memory overhead
+
+		for (int k = start; k < srcHeight; k=k+delta)
+        {
+			ImageUtils.getPixelsBGR(srcImg, k, srcWidth, srcPixels, tempPixels);
+
+			for (int i = dstWidth-1;i>=0 ; i--)
+			{
+				int sampleLocation = i;
+				final int max = horizontalSubsamplingData.arrN[i];
+
+				float sample0 = 0.0f;
+				int index= i * horizontalSubsamplingData.numContributors;
+				for (int j= max-1; j >= 0; j--) {
+					float arrWeight = horizontalSubsamplingData.arrWeight[index];
+					int pixelIndex = horizontalSubsamplingData.arrPixel[index];
+
+					sample0 += (srcPixels[pixelIndex]&0xff) * arrWeight;
+					index++;
 				}
+
+				workPixels[k][sampleLocation] = toByte(sample0);
 			}
 			processedItems++;
 			if (start==0){ // only update progress listener from main thread
@@ -428,19 +507,6 @@ public class ResampleOp extends AdvancedResizeOp
 			return (byte) MAX_CHANNEL_VALUE;
 		}
 		return (byte)f;
-	}
-
-	private void putSample(byte[] image, float sample0,float sample1,float sample2, int location) {
-		image[location] = toByte(sample0);
-		image[location+1] = toByte(sample1);
-		image[location+2] = toByte(sample2);
-	}
-
-	private void putSample(byte[] image, float sample0,float sample1,float sample2,float sample3, int location) {
-		image[location] = toByte(sample0);
-		image[location+1] = toByte(sample1);
-		image[location+2] = toByte(sample2);
-		image[location+3] = toByte(sample3);
 	}
 
 	private void setProgress(){
