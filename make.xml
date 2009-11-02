@@ -6,25 +6,25 @@
 	<target name="compile" depends="clean">
         <mkdir dir="build/classes"/>
         <mkdir dir="dist"/>
-        <javac source="1.5" srcdir="src" destdir="build/classes" debug="true"
+        <javac source="1.5" srcdir="src/main" destdir="build/classes" debug="true"
                optimize="true" verbose="false" target="1.5">
-			<classpath path="libs/Filters.jar"/>
+			<classpath path="dist/Filters.jar"/>
 		</javac>
         <jar basedir="build/classes" destfile="dist/imagescaling${version}.jar">
-            <fileset dir="src" includes="**/*.properties"/>
+            <fileset dir="src/main" includes="**/*.properties"/>
 			<fileset dir="." includes="license.txt"/>
 		</jar>
-		<copy file="libs/Filters.jar" tofile="dist/Filters.jar" />
+		<!-- <copy file="libs/Filters.jar" tofile="dist/Filters.jar" /> -->
 	</target>
 
     <target name="source">
         <zip destfile="dist/imagescaling_src_${version}.zip">
             <fileset dir="." includes="make.xml"/>
-            <fileset dir="." includes="src/**/*"/>
+            <fileset dir="." includes="src/main/**/*"/>
 			<fileset dir="." includes="*.txt"/>
 		</zip>
     </target>
-	<target name="source_test">
+	<!-- <target name="source_test">
         <zip destfile="dist/imagescaling_src_unittest_${version}.zip">
             <fileset dir="." includes="make.xml"/>
             <fileset dir="." includes="src/**/*"/>
@@ -32,11 +32,11 @@
 			<fileset dir="." includes="*.txt"/>
 		</zip>
     </target>
-
+    -->
 
 	<target name="javadoc" depends="compile">
 		<mkdir dir="build/javadoc"/>
-		<javadoc destdir="build/javadoc" sourcepath="src" windowtitle="Image Scaling Library ${version}"/>
+		<javadoc destdir="build/javadoc" sourcepath="src/main" windowtitle="Image Scaling Library ${version}"/>
 		<zip destfile="dist/imagescaling_javadoc_${version}.zip">
             <fileset dir="build/javadoc" includes="**/*"/>
 		</zip>
