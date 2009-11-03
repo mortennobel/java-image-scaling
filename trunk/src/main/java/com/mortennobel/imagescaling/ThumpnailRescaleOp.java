@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 
 /**
  * The idea of this class is to provide fast (and inaccurate) rescaling method
- * suitable for creating thumpnails.
+ * suitable for creating thumbnails.
  *
  * Note that the algorithm assumes that the source image is significant larger
  * than the destination image
