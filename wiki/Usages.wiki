@@ -6,7 +6,7 @@
 A list of applications / sites where this project is used 
 
 
-= Details =
+= Applications =
 
   * [http://www.nobel-joergensen.com/java/projects/easizer/ Easizer - Image resizing made easy!] - A simple image resizing util. 
-<img src="http://www.nobel-joergensen.com/java/images/easizer_screenshot.jpg">
+<img src="http://www.nobel-joergensen.com/java/images/easizer_screenshot.jpg" width="20%" height="20%">
