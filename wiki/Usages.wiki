@@ -1,9 +1,9 @@
 #summary Usages of the project
 #sidebar TOCArticles
 
-= Introduction =
+= Who's using Java Image Scaling =
 
-A list of applications where this project is used 
+A list of applications / sites where this project is used 
 
 
 = Details =
