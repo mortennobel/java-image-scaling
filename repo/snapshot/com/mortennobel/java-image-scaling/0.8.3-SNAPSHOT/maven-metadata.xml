@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>com.mortennobel</groupId>
+  <artifactId>java-image-scaling</artifactId>
+  <version>0.8.3-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20091209233112</lastUpdated>
+  </versioning>
+</metadata>
