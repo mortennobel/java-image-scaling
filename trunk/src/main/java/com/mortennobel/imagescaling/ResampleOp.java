@@ -121,8 +121,9 @@ public class ResampleOp extends AdvancedResizeOp
 		assert multipleInvocationLock.incrementAndGet()==1:"Multiple concurrent invocations detected";
 
 		if (srcImg.getType() == BufferedImage.TYPE_BYTE_BINARY ||
-				srcImg.getType() == BufferedImage.TYPE_BYTE_INDEXED)
-			srcImg= ImageUtils.convert(srcImg, srcImg.getColorModel().hasAlpha() ?
+				srcImg.getType() == BufferedImage.TYPE_BYTE_INDEXED ||
+				srcImg.getType() == BufferedImage.TYPE_CUSTOM)
+			srcImg = ImageUtils.convert(srcImg, srcImg.getColorModel().hasAlpha() ?
 					BufferedImage.TYPE_4BYTE_ABGR : BufferedImage.TYPE_3BYTE_BGR);
 
 		this.nrChannels= ImageUtils.nrChannels(srcImg);

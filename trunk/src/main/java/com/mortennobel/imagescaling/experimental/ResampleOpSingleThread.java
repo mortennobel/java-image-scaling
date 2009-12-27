@@ -85,17 +85,15 @@ public class ResampleOpSingleThread extends AdvancedResizeOp
 		this.dstWidth = dstWidth;
 		this.dstHeight = dstHeight;
 		if (srcImg.getType() == BufferedImage.TYPE_BYTE_BINARY ||
-				srcImg.getType() == BufferedImage.TYPE_BYTE_INDEXED)
-			srcImg= ImageUtils.convert(srcImg, srcImg.getColorModel().hasAlpha() ?
+				srcImg.getType() == BufferedImage.TYPE_BYTE_INDEXED ||
+				srcImg.getType() == BufferedImage.TYPE_CUSTOM)
+			srcImg = ImageUtils.convert(srcImg, srcImg.getColorModel().hasAlpha() ?
 					BufferedImage.TYPE_4BYTE_ABGR : BufferedImage.TYPE_3BYTE_BGR);
 
 		this.nrChannels= ImageUtils.nrChannels(srcImg);
 		assert nrChannels > 0;
 		this.srcWidth = srcImg.getWidth();
         this.srcHeight = srcImg.getHeight();
-
-
-
 
 		this.processedItems = 0;
 		this.totalItems = srcHeight;
