@@ -6,7 +6,7 @@
     <groupId>com.mortennobel</groupId>
     <artifactId>java-image-scaling</artifactId>
     <name>java-image-scaling</name>
-    <version>0.8.3-SNAPSHOT</version>
+    <version>0.8.4-SNAPSHOT</version>
     <description>
         The purpose of the library is to provide better image scaling options than
         the Java runtime provides.
