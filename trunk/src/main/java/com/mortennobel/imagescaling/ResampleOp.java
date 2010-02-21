@@ -32,10 +32,6 @@ public class ResampleOp extends AdvancedResizeOp
 {
 	private final int MAX_CHANNEL_VALUE= 255;
 
-	private final Object lock = new Object();
-
-	private int runningThreads = 0;
-
 	private int nrChannels;
 	private int srcWidth;
 	private int srcHeight;
@@ -143,24 +139,18 @@ public class ResampleOp extends AdvancedResizeOp
 
         final BufferedImage scrImgCopy = srcImg;
         final byte[][] workPixelsCopy = workPixels;
+        Thread[] threads = new Thread[numberOfThreads-1];
         for (int i=1;i<numberOfThreads;i++){
-            synchronized (lock){
-                runningThreads++;
-            }
             final int finalI = i;
-            Thread thread = new Thread(new Runnable(){
+            threads[i-1] = new Thread(new Runnable(){
                 public void run(){
                     horizontallyFromSrcToWork(scrImgCopy, workPixelsCopy,finalI,numberOfThreads);
-                    synchronized (lock){
-                        runningThreads--;
-                        lock.notifyAll();
-                    }
                 }
             });
-            thread.start();
+            threads[i-1].start();
         }
         horizontallyFromSrcToWork(scrImgCopy, workPixelsCopy,0,numberOfThreads);
-        waitForAllThreadsAreDone();
+        waitForAllThreads(threads);
 
         byte[] outPixels = new byte[dstWidth*dstHeight*nrChannels];
         // --------------------------------------------------
@@ -168,23 +158,16 @@ public class ResampleOp extends AdvancedResizeOp
 		// --------------------------------------------------
         final byte[] outPixelsCopy = outPixels;
         for (int i=1;i<numberOfThreads;i++){
-            synchronized (lock){
-                runningThreads++;
-            }
             final int finalI = i;
-            Thread thread = new Thread(new Runnable(){
+            threads[i-1] = new Thread(new Runnable(){
                 public void run(){
 					verticalFromWorkToDst(workPixelsCopy, outPixelsCopy, finalI,numberOfThreads);
-					synchronized (lock){
-                        runningThreads--;
-                        lock.notifyAll();
-                    }
                 }
             });
-            thread.start();
+            threads[i-1].start();
         }
         verticalFromWorkToDst(workPixelsCopy, outPixelsCopy, 0,numberOfThreads);
-        waitForAllThreadsAreDone();
+        waitForAllThreads(threads);
 
         //noinspection UnusedAssignment
         workPixels = null; // free memory
@@ -207,7 +190,18 @@ public class ResampleOp extends AdvancedResizeOp
 		return out;
     }
 
-	static SubSamplingData createSubSampling(ResampleFilter filter, int srcSize, int dstSize) {
+    private void waitForAllThreads(Thread[] threads) {
+        try {
+            for (Thread t:threads){
+                t.join(Long.MAX_VALUE);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    static SubSamplingData createSubSampling(ResampleFilter filter, int srcSize, int dstSize) {
 		float scale = (float)dstSize / (float)srcSize;
 		int[] arrN= new int[dstSize];
 		int numContributors;
@@ -311,21 +305,6 @@ public class ResampleOp extends AdvancedResizeOp
 			}
 		}
 		return new SubSamplingData(arrN, arrPixel, arrWeight, numContributors);
-	}
-
-
-    private void waitForAllThreadsAreDone() {
-		if (runningThreads>0){
-			synchronized(lock){
-				while (runningThreads>0){
-					try{
-						lock.wait();
-					} catch (InterruptedException e) {
-						// ignore
-					}
-				}
-			}
-		}
 	}
 
     private void verticalFromWorkToDst(byte[][] workPixels, byte[] outPixels, int start, int delta) {
