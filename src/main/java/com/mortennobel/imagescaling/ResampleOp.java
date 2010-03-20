@@ -486,7 +486,7 @@ public class ResampleOp extends AdvancedResizeOp
 		if (f>MAX_CHANNEL_VALUE){
 			return (byte) MAX_CHANNEL_VALUE;
 		}
-		return (byte)f;
+		return (byte)(f+0.5f); // add 0.5 same as Math.round
 	}
 
 	private void setProgress(){
