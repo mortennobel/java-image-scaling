@@ -79,7 +79,7 @@ public class ResampleOp extends AdvancedResizeOp
 
 	private AtomicInteger multipleInvocationLock = new AtomicInteger();
 
-	private ResampleFilter filter = new Lanczos3Filter();
+	private ResampleFilter filter = ResampleFilters.getLanczos3Filter();
 
 
 	public ResampleOp(int destWidth, int destHeight) {
