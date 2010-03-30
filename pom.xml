@@ -47,6 +47,7 @@
 
     <!-- SubVersion Repository -->
     <scm>
+        <url>http://java-image-scaling.googlecode.com/svn/</url>
         <connection>scm:svn:http://java-image-scaling.googlecode.com/svn/</connection>
         <developerConnection>scm:svn:https://developername@java-image-scaling.googlecode.com/svn/</developerConnection>
     </scm>
