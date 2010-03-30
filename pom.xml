@@ -8,8 +8,7 @@
     <name>java-image-scaling</name>
     <version>0.8.4-SNAPSHOT</version>
     <description>
-        The purpose of the library is to provide better image scaling options than
-        the Java runtime provides.
+        The purpose of the library is to provide better image scaling options than the Java runtime provides.
     </description>
     <url>http://code.google.com/p/java-image-scaling</url>
     <licenses>
@@ -56,15 +55,14 @@
     <distributionManagement>
         <repository>
             <uniqueVersion>false</uniqueVersion>
-            <id>java-image-scaling</id>
-            <name>Java Image Scaling Repository Released</name>
-            <url>svn:https://java-image-scaling.googlecode.com/svn/repo/released</url>
+            <id>sonatype-nexus-staging</id>
+            <name>Nexus Release Repository</name>
+            <url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
         <snapshotRepository>
-            <uniqueVersion>false</uniqueVersion>
-            <id>java-image-scaling</id>
-            <name>Java Image Scaling Repository Snapshot</name>
-            <url>svn:https://java-image-scaling.googlecode.com/svn/repo/snapshot</url>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>http://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -211,6 +209,7 @@
                         <exclude>**/SpeedDualThreadTest.java</exclude>
                         <exclude>**/MultipleResizeTest.java</exclude>
                         <exclude>**/CorrectnessTest.java</exclude>
+                        <exclude>**/TestThumpnailRescaleOp.java</exclude>
                     </excludes>
                 </configuration>
             </plugin>
