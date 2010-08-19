@@ -20,43 +20,24 @@ package com.mortennobel.imagescaling;
 import java.awt.*;
 
 /**
- * This class let you create dimension constrains based on a actual image
+ * This class let you create dimension constrains based on a actual image.
+ *
+ * Class may be subclassed to create user defined behavior. To do this you need to overwrite
+ * the method getDimension(Dimension).
  */
 public class DimensionConstrain {
-	public static final int NO_ALIGNMENT = -1;
-
-	private final float alignX;
-	private final float alignY;
-
-	private DimensionConstrain ()
+	protected DimensionConstrain ()
 	{
-		alignX = NO_ALIGNMENT;
-		alignY = NO_ALIGNMENT;
 	}
-
-	/*private DimensionConstrain(float alignX, float alignY) {
-		assert alignX>=0 && alignX<=1:"Align x must be in the range [0:1]";
-		assert alignY>=0 && alignY<=1:"Align y must be in the range [0:1]";
-		this.alignX = alignX;
-		this.alignY = alignY;
-	}*/
 
 	/**
 	 * Will always return a dimension with positive width and height;
-	 * @param dimension
-	 * @return
+	 * @param dimension of the unscaled image
+	 * @return the dimension of the scaled image
 	 */
 	public Dimension getDimension(Dimension dimension){
 		return dimension;
 	}
-
-	/*public final float getAlignX() {
-		return alignX;
-	}
-
-	public final float getAlignY() {
-		return alignY;
-	}*/
 
 	/**
 	 * Used when the destination size is fixed. This may not keep the image aspect radio
@@ -72,56 +53,6 @@ public class DimensionConstrain {
 			}
 		};
 	}
-
-	/**
-	 * Used when the destination size is fixed. This image aspect radio is keeped by cropping the image.
-	 * <br>
-	 * If the source image is too wide, alignx determine what part should be keeped:
-	 * <ul>
-	 * <li>0.0f means left part keeped (right part removed)
-	 * <li>0.5f means center part keeped (left and right part removed)
-	 * <li>1.0f means right part keeped (left part removed)
-	 * </ul>
-	 * If the source image is too high, aligny determines what part should be keeped:
-	 * <ul>
-	 * <li>0.0f means top part keeped (bottom part removed)
-	 * <li>0.5f means center part keeped (top and bottom part removed)
-	 * <li>1.0f means bottom part keeped (top part removed)
-	 * </ul>
-	 *
-	 * @param width destination dimension width
-	 * @param height destination dimension height
-	 * @param alignX alignment of content when cropped horizontal
-	 * @param alignY alignment of content when cropped vertical
-	 * @return destination dimension (width x height)
-	 */
-	/*public static DimensionConstrain createAbsolutionDimensionKeepAspectRadio(final int width, final int height, float alignX, float alignY){
-		assert width>0 && height>0:"Dimension must be a positive integer";
-		return new DimensionConstrain(alignX,alignY){
-			public Dimension getDimension(Dimension dimension) {
-				return new Dimension(width, height);
-			}
-		};
-	}*/
-
-	/**
-	 * Used when the destination size is fixed. This image aspect radio is keeped by cropping the image (center part is
-	 * keeped).
-	 *
-	 * @param width destination dimension width
-	 * @param height destination dimension height
-	 * @return destination dimension (width x height)
-	 */
-	/*public static DimensionConstrain createAbsolutionDimensionKeepAspectRadio(final int width, final int height){
-		assert width>0 && height>0:"Dimension must be a positive integer";
-		final float KEEP_CENTER = 0.5f;
-		return new DimensionConstrain(KEEP_CENTER,KEEP_CENTER){
-			public Dimension getDimension(Dimension dimension) {
-				return new Dimension(width, height);
-			}
-		};
-	}*/
-	
 
 	/**
 	 * Used when the destination size is relative to the source. This keeps the image aspect radio
