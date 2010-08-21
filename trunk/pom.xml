@@ -226,6 +226,12 @@
                     </excludes>
                 </configuration>
             </plugin>
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <mavenExecutorId>forked-path</mavenExecutorId>
+                </configuration>
+            </plugin>
         </plugins>
         <extensions>
             <extension>
