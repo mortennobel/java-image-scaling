@@ -47,7 +47,7 @@
     <scm>
         <url>http://java-image-scaling.googlecode.com/svn/tags/0.8.5</url>
         <connection>scm:svn:http://java-image-scaling.googlecode.com/svn/tags/0.8.5</connection>
-        <developerConnection>scm:svn:https://developername@java-image-scaling.googlecode.com/svn/tags/0.8.5</developerConnection>
+        <developerConnection>scm:svn:https://java-image-scaling.googlecode.com/svn/tags/0.8.5</developerConnection>
     </scm>
 
     <!-- Distribution to google code SVN -->
