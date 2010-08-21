@@ -2,3 +2,4 @@
   * [Getting_started Getting started]
   * [Usages Usages]
   * [Links Links]
+  * [ReleaseNotes Release notes]
