@@ -1,6 +1,6 @@
+#summary Full release notes
 #labels Featured
-#Full release notes
-
+#sidebar TOCArticle
 = Details =
 
 Version 0.8.5 Released (21-08-10)
