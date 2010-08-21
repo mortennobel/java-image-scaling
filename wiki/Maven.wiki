@@ -1,5 +1,6 @@
 #summary Maven support
 #labels Featured
+#sidebar TOCArticles
 
 Apache maven
 {{{
