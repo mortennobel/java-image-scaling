@@ -1,5 +1,6 @@
   * [Introduction Introduction]
   * [Getting_started Getting started]
   * [Usages Usages]
+  * [Maven Maven]
   * [Links Links]
   * [ReleaseNotes Release notes]
