@@ -1,12 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.mortennobel</groupId>
     <artifactId>java-image-scaling</artifactId>
     <name>java-image-scaling</name>
-    <version>0.8.4-SNAPSHOT</version>
+    <version>0.8.5</version>
     <description>
         The purpose of the library is to provide better image scaling options than the Java runtime provides.
     </description>
@@ -47,9 +45,9 @@
 
     <!-- SubVersion Repository -->
     <scm>
-        <url>http://java-image-scaling.googlecode.com/svn/</url>
-        <connection>scm:svn:http://java-image-scaling.googlecode.com/svn/</connection>
-        <developerConnection>scm:svn:https://developername@java-image-scaling.googlecode.com/svn/</developerConnection>
+        <url>http://java-image-scaling.googlecode.com/svn/tags/0.8.5</url>
+        <connection>scm:svn:http://java-image-scaling.googlecode.com/svn/tags/0.8.5</connection>
+        <developerConnection>scm:svn:https://developername@java-image-scaling.googlecode.com/svn/tags/0.8.5</developerConnection>
     </scm>
 
     <!-- Distribution to google code SVN -->
