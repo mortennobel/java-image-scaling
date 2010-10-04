@@ -64,7 +64,8 @@ public class DimensionConstrain {
 	}
 
 	/**
-	 * Used when the destination size is relative to the source. This keeps the image aspect radio
+	 * Used when the destination size is relative to the source. This keeps the image aspect radio if fractionWidth
+     * equals fractionHeight
 	 * @param
 	 * @return
 	 */
