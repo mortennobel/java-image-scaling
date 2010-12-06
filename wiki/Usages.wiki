@@ -11,8 +11,3 @@ A list of applications / sites where this project is used
   * [http://www.MyBuckStory.com/ MyBuckStory.com]
   * [http://www.concursive.com/show/concourseconnect ConcourseConnect]
   * [http://industry-supply.dk/ Industry Supply]
-
-
-= Applications =
-
-  * [http://www.nobel-joergensen.com/java/projects/easizer/ Easizer - Image resizing made easy!] - A simple image resizing util. 
