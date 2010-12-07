@@ -34,6 +34,7 @@ import java.util.Iterator;
 
 /**
  * @author Heinz Doerr
+ * @author Morten Nobel-Joergensen
  */
 public class ImageUtils {
 
