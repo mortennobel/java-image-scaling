@@ -1,4 +1,5 @@
 #summary Dependencies
+#sidebar TOCArticles
 
 = Dependencies =
 
