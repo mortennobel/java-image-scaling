@@ -1,7 +1,5 @@
 package com.mortennobel.imagescaling;
 
-import com.mortennobel.imagescaling.ThumpnailRescaleOp;
-
 import java.awt.image.BufferedImage;
 import java.awt.*;
 import java.io.IOException;
@@ -11,9 +9,8 @@ import org.junit.Test;
 import org.junit.Before;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 
-public class TestThumpnailRescaleOp{
+public class TestThumbnailRescaleOp {
 	@Test
 	public void test1Sample(){
 		BufferedImage bi = new BufferedImage(3,3,BufferedImage.TYPE_INT_ARGB);
@@ -24,8 +21,8 @@ public class TestThumpnailRescaleOp{
 		g2d.fillRect(1,1,1,1);
 		g2d.dispose();
 
-		ThumpnailRescaleOp rescaleOp = new ThumpnailRescaleOp(1,1);
-		rescaleOp.setSampling(ThumpnailRescaleOp.Sampling.S_1SAMPLE);
+		ThumbnailRescaleOp rescaleOp = new ThumbnailRescaleOp(1,1);
+		rescaleOp.setSampling(ThumbnailRescaleOp.Sampling.S_1SAMPLE);
 		BufferedImage scaledImage = rescaleOp.filter(bi, null);
 		assertNotNull(scaledImage);
 		assertEquals(scaledImage.getRGB(0,0), Color.red.getRGB());
@@ -41,8 +38,8 @@ public class TestThumpnailRescaleOp{
 		g2d.fillRect(1,1,1,1);
 		g2d.dispose();
 
-		ThumpnailRescaleOp rescaleOp = new ThumpnailRescaleOp(2,2);
-		rescaleOp.setSampling(ThumpnailRescaleOp.Sampling.S_1SAMPLE);
+		ThumbnailRescaleOp rescaleOp = new ThumbnailRescaleOp(2,2);
+		rescaleOp.setSampling(ThumbnailRescaleOp.Sampling.S_1SAMPLE);
 		BufferedImage scaledImage = rescaleOp.filter(bi, null);
 		assertNotNull(scaledImage);
 		for (int x=0;x<scaledImage.getWidth();x++){
@@ -66,8 +63,8 @@ public class TestThumpnailRescaleOp{
 		g2d.fillRect(2,0,1,1);
 		g2d.dispose();
 
-		ThumpnailRescaleOp rescaleOp = new ThumpnailRescaleOp(1,1);
-		rescaleOp.setSampling(ThumpnailRescaleOp.Sampling.S_2X2_RGSS);
+		ThumbnailRescaleOp rescaleOp = new ThumbnailRescaleOp(1,1);
+		rescaleOp.setSampling(ThumbnailRescaleOp.Sampling.S_2X2_RGSS);
 		BufferedImage scaledImage = rescaleOp.filter(bi, null);
 		assertNotNull(scaledImage);
 		Color color = new Color(scaledImage.getRGB(0,0));
@@ -76,7 +73,7 @@ public class TestThumpnailRescaleOp{
 		assertEquals(color.getRed(),255/4);
 	}
 
-	@Test
+	/*@Test 
 	public void test8Rooks(){
 		BufferedImage bi = new BufferedImage(6,6,BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g2d = bi.createGraphics();
@@ -86,15 +83,15 @@ public class TestThumpnailRescaleOp{
 		g2d.fillRect(2,0,1,1);
 		g2d.dispose();
 
-		ThumpnailRescaleOp rescaleOp = new ThumpnailRescaleOp(1,1);
-		rescaleOp.setSampling(ThumpnailRescaleOp.Sampling.S_8ROCKS);
+		ThumbnailRescaleOp rescaleOp = new ThumbnailRescaleOp(1,1);
+		rescaleOp.setSampling(ThumbnailRescaleOp.Sampling.S_8ROCKS);
 		BufferedImage scaledImage = rescaleOp.filter(bi, null);
 		assertNotNull(scaledImage);
 		Color color = new Color(scaledImage.getRGB(0,0));
 		assertEquals(color.getBlue(),0);
 		assertEquals(color.getGreen(),0);
 		assertEquals(color.getRed(),255/8);
-	}
+	}*/
 
 	static BufferedImage bufferedImage;
 
@@ -120,7 +117,7 @@ public class TestThumpnailRescaleOp{
 	@Test
 	public void largeThumpRescale(){
 		// used for measure speed
-		ThumpnailRescaleOp multiStepRescale = new ThumpnailRescaleOp(50,50);
+		ThumbnailRescaleOp multiStepRescale = new ThumbnailRescaleOp(50,50);
 		BufferedImage bufferedImage2 = multiStepRescale.filter(bufferedImage, null);
 	}
 
@@ -133,7 +130,7 @@ public class TestThumpnailRescaleOp{
 
 		int destWidth = 7;
 		int destHeight = 8;
-		ThumpnailRescaleOp multiStepRescale = new ThumpnailRescaleOp(destWidth, destHeight);
+		ThumbnailRescaleOp multiStepRescale = new ThumbnailRescaleOp(destWidth, destHeight);
 		BufferedImage bufferedImage2 = multiStepRescale.filter(bi, null);
 		assertEquals(bufferedImage2.getWidth(), destWidth);
 		assertEquals(bufferedImage2.getHeight(), destHeight);

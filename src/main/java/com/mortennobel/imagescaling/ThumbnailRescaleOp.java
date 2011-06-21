@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
  * Note that the algorithm assumes that the source image is significant larger
  * than the destination image
  */
-public class ThumpnailRescaleOp extends AdvancedResizeOp {
+public class ThumbnailRescaleOp extends AdvancedResizeOp {
 	public static enum Sampling {
 		S_1SAMPLE(new float[][]{{0.5f,0.5f}}),
 		S_2X2_RGSS(new float[][]{
@@ -43,11 +43,11 @@ public class ThumpnailRescaleOp extends AdvancedResizeOp {
 
 	private Sampling sampling = Sampling.S_8ROCKS;
 
-	public ThumpnailRescaleOp(int destWidth, int destHeight) {
+	public ThumbnailRescaleOp(int destWidth, int destHeight) {
 		this(DimensionConstrain.createAbsolutionDimension(destWidth, destHeight));
 	}
 
-	public ThumpnailRescaleOp(DimensionConstrain dimensionConstrain) {
+	public ThumbnailRescaleOp(DimensionConstrain dimensionConstrain) {
 		super(dimensionConstrain);
 	}
 
