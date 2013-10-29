@@ -3,7 +3,8 @@
 #sidebar TOCArticles
 
 = Details =
-
+Version 0.8.6 Released (29-10-13)
+ * Change license to BSD 3-Clause License
 Version 0.8.5 Released (21-08-10)
  * Fix minor rounding error (Issue 16)
  * Change DimensionConstrain constructor from private to protected (Issue 19)
