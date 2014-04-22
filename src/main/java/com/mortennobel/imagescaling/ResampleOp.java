@@ -186,7 +186,7 @@ public class ResampleOp extends AdvancedResizeOp
                 t.join(Long.MAX_VALUE);
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
             throw new RuntimeException(e);
         }
     }
