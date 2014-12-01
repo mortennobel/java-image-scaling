@@ -1,0 +1,14 @@
+#summary Image rescale related links
+#sidebar TOCArticles
+
+= Java =
+
+  * [http://today.java.net/pub/a/today/2007/04/03/perils-of-image-getscaledinstance.html The Perils of Image.getScaledInstance() by Chris Campbell 04/03/2007]
+  * [http://www.semanticmetadata.net/2007/09/20/content-based-image-resizing-update-to-v2/ Content Based Image Resizing (GPL, Java)]
+  * [http://www.jmagick.org/ JMagick - a Java interface to ImageMagick]
+  * [https://jrawio.dev.java.net/] JRawIO - raw format for Java ImageIO
+= Native =
+  * [http://www.imagemagick.org/ ImageMagick - open source image library]=
+= Image scaling theory =
+  * [http://www.compuphase.com/graphic/scale2.htm Quick image scaling by 2]
+  * [http://www.ddj.com/architect/184405045 Image Scaling With Bresenham]
