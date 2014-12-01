@@ -4,7 +4,7 @@
     <groupId>com.mortennobel</groupId>
     <artifactId>java-image-scaling</artifactId>
     <name>java-image-scaling</name>
-    <version>0.8.6</version>
+    <version>0.8.7-SNAPSHOT</version>
     <description>
         The purpose of the library is to provide better image scaling options than the Java runtime provides.
     </description>
@@ -45,9 +45,9 @@
 
     <!-- SubVersion Repository -->
     <scm>
-        <url>http://java-image-scaling.googlecode.com/svn/tags/0.8.6</url>
-        <connection>scm:svn:http://java-image-scaling.googlecode.com/svn/tags/0.8.6</connection>
-        <developerConnection>scm:svn:https://java-image-scaling.googlecode.com/svn/tags/0.8.6</developerConnection>
+        <url>http://java-image-scaling.googlecode.com/svn/</url>
+        <connection>scm:svn:http://java-image-scaling.googlecode.com/svn/</connection>
+        <developerConnection>scm:svn:https://java-image-scaling.googlecode.com/svn/</developerConnection>
     </scm>
 
     <!-- Distribution to google code SVN -->
