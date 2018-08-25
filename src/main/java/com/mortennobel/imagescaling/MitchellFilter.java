@@ -48,7 +48,7 @@ final class MitchellFilter implements ResampleFilter
 	}
 
 	public String getName() {
-		return "BSpline";
+		return "Mitchell";
 	}
 }
 
