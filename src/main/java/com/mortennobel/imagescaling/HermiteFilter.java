@@ -32,6 +32,6 @@ class HermiteFilter implements ResampleFilter
 	}
 
 	public String getName() {
-		return "BSpline";
+		return "Hermite";
 	}
 }
