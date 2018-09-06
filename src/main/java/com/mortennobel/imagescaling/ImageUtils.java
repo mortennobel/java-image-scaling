@@ -240,10 +240,13 @@ public class ImageUtils {
      * @throws IOException
      */
     public static byte[] copyJpegMetaData(byte[] source, byte[] dest) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageOutputStream out = new MemoryCacheImageOutputStream(baos);
-        copyJpegMetaData(new ByteArrayInputStream(source),new ByteArrayInputStream(dest), out);
-        return baos.toByteArray();
+        try ( //
+            ByteArrayOutputStream baos = new ByteArrayOutputStream(); //
+            ImageOutputStream out = new MemoryCacheImageOutputStream(baos); //
+        ) {
+            copyJpegMetaData(new ByteArrayInputStream(source), new ByteArrayInputStream(dest), out);
+            return baos.toByteArray();
+        }
     }
 
     /**
@@ -255,23 +258,33 @@ public class ImageUtils {
      * @throws IOException
      */
     public static void copyJpegMetaData(InputStream source, InputStream dest, ImageOutputStream out) throws IOException {
+
         // Read meta data from src image
-        Iterator iter = ImageIO.getImageReadersByFormatName("jpeg");
-        ImageReader reader=(ImageReader) iter.next();
-        ImageInputStream iis = new MemoryCacheImageInputStream(source);
-        reader.setInput(iis);
-        IIOMetadata metadata = reader.getImageMetadata(0);
-        iis.close();
-        // Read dest image
-        ImageInputStream outIis = new MemoryCacheImageInputStream(dest);
-        reader.setInput(outIis);
-        IIOImage image = reader.readAll(0,null);
-        image.setMetadata(metadata);
-        outIis.close();
-        // write dest image
-        iter = ImageIO.getImageWritersByFormatName("jpeg");
-        ImageWriter writer=(ImageWriter) iter.next();
-        writer.setOutput(out);
-        writer.write(image);
+        Iterator<ImageReader> iterReader = ImageIO.getImageReadersByFormatName("jpeg");
+        ImageReader reader = iterReader.next();
+
+        try ( //
+            ImageInputStream iis = new MemoryCacheImageInputStream(source); //
+            ImageInputStream outIis = new MemoryCacheImageInputStream(dest); //
+        ) {
+            reader.setInput(iis);
+            IIOMetadata metadata = reader.getImageMetadata(0);
+            iis.close();
+
+            // Read dest image
+            reader.setInput(outIis);
+            IIOImage image = reader.readAll(0, null);
+            image.setMetadata(metadata);
+            outIis.close();
+
+            // write dest image
+            Iterator<ImageWriter> iterWriter = ImageIO.getImageWritersByFormatName("jpeg");
+            ImageWriter writer = iterWriter.next();
+            writer.setOutput(out);
+            writer.write(image);
+        }
+        finally {
+            reader.dispose();
+        }
     }
 }
